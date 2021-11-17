@@ -22,7 +22,7 @@ Create Table Instructor(
 
 Create Table Student (
   roll_number VARCHAR(50),
-  s_emil VARCHAR(100),
+  s_email VARCHAR(100),
   s_name VARCHAR(100),
   s_password CHAR(64),
   Primary KEY (roll_number)
@@ -131,16 +131,16 @@ app.listen('3000', () => {
   console.log("server started on port 3000");
 })
 
-// Create Connection
+// Create Connection to sql server
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
   database: "lms",
-  multipleStatements: true,
+  multipleStatements: true
 })
 
-// Connect
+// Connect to the sql server
 db.connect((err) => {
   if(err) throw err;
 
@@ -168,4 +168,62 @@ app.get('/init-db', (req, res) => {
     }
     res.send("Tables initialized and created....");
   })
-})
+});
+
+// Login API
+app.get('/login', (req, res) => {
+  const {email, password} = req.query;
+  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(result.length === 0) {
+      console.log("RO doesn't exist");
+      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}"`;
+
+      db.query(sql_query, (err, result) => {
+        if(result.length === 0){
+          console.log("Instructor doesn't exist");
+          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}"`;
+
+          db.query(sql_query, (err, result) => {
+            if(result.length === 0){
+              console.log("Student doesn't exist");
+              res.send({access_level: "None"})
+            }
+            else res.send({access_level: "Student"});
+          })
+        }
+        else res.send({access_level: "Instructor"});
+      })
+    }
+    else res.send({access_level: "RO"});
+  })
+});
+
+// Add RO API
+app.get('/add-ro', (req, res) => {
+  const {name, email, password} = req.query;
+  const sql_query = `INSERT INTO RO VALUES ("${email}", "${name}", "${password}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("RO already exists", err.message);
+      throw err;
+    }
+    res.send("Successfully added RO in the RO table")
+  })
+});
+
+// Enroll Student
+app.get('/enroll-student', (req, res) => {
+  const {name, email, password, roll_number} = req.query;
+  const sql_query = `INSERT INTO Student VALUES ("${roll_number}", "${email}", "${name}", "${password}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Student already exists", err.message);
+      throw err;
+    }
+    res.send("Successfully enrolled Student in the Student table")
+  })
+});
