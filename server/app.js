@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
+const { number } = require('prop-types');
 
 const app = express();
 
@@ -126,9 +127,16 @@ Create Table submits_a(
 );
 `;
 
-// Start listening on port 3000 for requests 
-app.listen('3000', () => {
-  console.log("server started on port 3000");
+let allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', "*");
+  next();
+}
+app.use(allowCrossDomain);
+
+// Start listening on port 3010 for requests 
+app.listen('3010', () => {
+  console.log("server started on port 3010");
 })
 
 // Create Connection to sql server
@@ -217,13 +225,15 @@ app.get('/add-ro', (req, res) => {
 // Enroll Student
 app.get('/enroll-student', (req, res) => {
   const {name, email, password, roll_number} = req.query;
+  
   const sql_query = `INSERT INTO Student VALUES ("${roll_number}", "${email}", "${name}", "${password}")`;
 
   db.query(sql_query, (err, result) => {
     if(err) {
       console.log("Student already exists", err.message);
-      throw err;
+      // throw err;
+      return;
     }
-    res.send("Successfully enrolled Student in the Student table")
+    res.send({enrolled: true, message: "Successfully enrolled Student in the Student table"})
   })
 });

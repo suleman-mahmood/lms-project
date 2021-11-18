@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 // layout for page
@@ -6,6 +6,42 @@ import Link from "next/link";
 import Auth from "layouts/Auth.js";
 
 export default function Login() {
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    const requestUrl = `http://localhost:3010/login?email=${email}&password=${password}`; 
+    fetch(requestUrl)
+    .then(response => {
+      response.json()
+      .then(data => {
+        // console.log("Fetching Data:", data);
+
+        if(data.access_level === "RO"){
+          // Redirect to RO Dashboard
+          window.location.href = window.location.origin + "/ro/dashboard";
+        }
+        else if(data.access_level === "Instructor"){
+          // Redirect to Instructor Dashboard
+          window.location.href = window.location.origin + "/instructor/dashboard";
+        }
+        else if(data.access_level === "Student"){
+          // Redirect to Student Dashboard
+          window.location.href = window.location.origin + "/student/dashboard";
+        }
+        else if(data.access_level === "None"){
+          // Incorrect User name, it is neither admin, instructor or student
+          console.log("Incorrect User name, it is neither admin, instructor or student");
+        }
+        else {
+          // Unknown Error
+          console.log("Unknown Error");
+        }
+      })
+    })
+  }
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -52,6 +88,8 @@ export default function Login() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      value={email}
+                      onChange={(e) => {setEmail(e.target.value)}}
                     />
                   </div>
 
@@ -66,6 +104,8 @@ export default function Login() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      value={password}
+                      onChange={(e) => {setPassword(e.target.value)}}
                     />
                   </div>
                   <div>
@@ -85,6 +125,7 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={() => {handleSubmit()}}
                     >
                       Sign In
                     </button>
