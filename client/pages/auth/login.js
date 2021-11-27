@@ -40,8 +40,11 @@ export default function Login() {
         }
       })
     })
+    .catch(err => {
+      console.log(err.message);
+    })
   }
-
+  
   return (
     <>
       <div className="container mx-auto px-4 h-full">

@@ -1,6 +1,5 @@
 const express = require('express');
 const mysql = require('mysql');
-const { number } = require('prop-types');
 
 const app = express();
 
