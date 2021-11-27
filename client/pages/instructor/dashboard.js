@@ -2,36 +2,85 @@ import React from "react";
 
 // components
 
-import CardLineChart from "components/Cards/CardLineChart.js";
-import CardBarChart from "components/Cards/CardBarChart.js";
-import CardPageVisits from "components/Cards/CardPageVisits.js";
-import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
-
+// import CardLineChart from "components/Cards/CardLineChart.js";
+// import CardBarChart from "components/Cards/CardBarChart.js";
+// import CardPageVisits from "components/Cards/CardPageVisits.js";
+// import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
+import CardStats  from "components/Cards/CardStats";
 // layout for page
 
-import Admin from "layouts/Admin.js";
+import Instructor from "layouts/Instructor.js";
 
 export default function Dashboard() {
   return (
     <>
-      <div className="flex flex-wrap">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardLineChart />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardBarChart />
-        </div>
-      </div>
-      <div className="flex flex-wrap mt-4">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardPageVisits />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardSocialTraffic />
+      {/* Header */}
+      <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
+        <div className="px-4 md:px-10 mx-auto w-full">
+          <div>
+            {/* Card stats */}
+            <div className="flex flex-wrap">
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+              
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+              
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+      
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+             
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+            
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+     
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="course_code"
+                  statTitle="course_title"
+              
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-Dashboard.layout = Admin;
+Dashboard.layout = Instructor;
