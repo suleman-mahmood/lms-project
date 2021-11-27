@@ -337,3 +337,82 @@ app.get('/roster', (req, res) => {
     res.send(result)
   })
 })
+
+app.get('/create-quiz', (req, res) => {
+  const {quiz_id, no_of_ques, start_time, end_time, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Quizes VALUES ("${quiz_id}", "${no_of_ques}", "${start_time}", "${end_time}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-question', (req, res) => {
+  const {ques_id, marks, prompt, opt_1, opt_2, opt_3, opt_4, answer, quiz_id} = req.query;
+
+  const sql_query = `INSERT INTO Questions VALUES ("${ques_id}", "${marks}", "${prompt}", "${opt_1}", "${opt_2}", "${opt_3}", "${opt_4}", "${answer}", "${quiz_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+// Delete the entire quiz and as well as all its associated questions
+app.get('/delete-quiz', (req, res) => {
+  const {quiz_id} = req.query;
+
+  const sql_query = `DELETE FROM Questions WHERE quiz_id = "${quiz_id}"; DELETE FROM Quizes WHERE quiz_id = "${quiz_id}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-assignment', (req, res) => {
+  const {a_id, blob, open_date, close_date, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Assignments VALUES ("${a_id}", "${blob}", "${open_date}", "${close_date}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/upload-resources', (req, res) => {
+  const {r_id, blob, type, upload_date, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Resources VALUES ("${r_id}", "${blob}", "${type}", "${upload_date}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/post-announcement', (req, res) => {
+  const {ann_id, description, time, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Announcements VALUES ("${ann_id}", "${description}", "${time}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
