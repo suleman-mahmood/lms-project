@@ -177,6 +177,8 @@ app.get('/init-db', (req, res) => {
   })
 });
 
+// -----------------------------------------RO IMPLEMENTATION ---------------------------------------------------------
+
 // Login API
 app.get('/login', (req, res) => {
   const {email, password} = req.query;
@@ -282,7 +284,7 @@ app.get('/remove-student', (req, res) => {
 app.get('/enroll-student', (req, res) => {
   const {course_id, roll_number} = req.query;
   
-  const sql_query = `INSERT INTO Takes VALUES ("${course_id}", "${roll_number}")`;
+  const sql_query = `INSERT INTO Takes VALUES (${course_id}, "${roll_number}")`;
 
   db.query(sql_query, (err, result) => {
     if(err) {
@@ -307,3 +309,31 @@ app.get('/create-course', (req, res) => {
     res.send({enrolled: true, message: "Successfully added Course in the Course table"})
   })
 });
+
+// -----------------------------------------INSTRUCTOR IMPLEMENTATION --------------------------------------------------
+
+app.get('/courses-taught', (req, res) => {
+  const {email} = req.query;
+
+  const sql_query = `SELECT * FROM Courses WHERE i_email = "${email}"`
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/roster', (req, res) => {
+  const {course_id} = req.query;
+
+  const sql_query = `SELECT * FROM Student WHERE roll_number in (SELECT roll_number FROM Takes WHERE course_id = "${course_id}")`
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
