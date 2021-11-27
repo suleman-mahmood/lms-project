@@ -182,17 +182,17 @@ app.get('/init-db', (req, res) => {
 // Login API
 app.get('/login', (req, res) => {
   const {email, password} = req.query;
-  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}"`;
+  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}" and r_password = "${password}"`;
 
   db.query(sql_query, (err, result) => {
     if(result.length === 0) {
       console.log("RO doesn't exist");
-      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}"`;
+      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}" and i_password = "${password}"`;
 
       db.query(sql_query, (err, result) => {
         if(result.length === 0){
           console.log("Instructor doesn't exist");
-          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}"`;
+          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}" and s_password = "${password}"`;
 
           db.query(sql_query, (err, result) => {
             if(result.length === 0){

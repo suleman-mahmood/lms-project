@@ -9,8 +9,12 @@ export default function Login() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
+
+    setErrorMessage("")
+
     const requestUrl = `http://localhost:3010/login?email=${email}&password=${password}`; 
     fetch(requestUrl)
     .then(response => {
@@ -32,11 +36,15 @@ export default function Login() {
         }
         else if(data.access_level === "None"){
           // Incorrect User name, it is neither admin, instructor or student
-          console.log("Incorrect User name, it is neither admin, instructor or student");
+          const msg = "Incorrect User name, it is neither admin, instructor or student"
+          console.log(msg);
+          setErrorMessage(msg)
         }
         else {
           // Unknown Error
-          console.log("Unknown Error");
+          const msg = "Unknown Error"
+          console.log(msg);
+          setErrorMessage(msg)
         }
       })
     })
@@ -123,6 +131,8 @@ export default function Login() {
                       </span>
                     </label>
                   </div>
+
+                  <p>{errorMessage}</p>
 
                   <div className="text-center mt-6">
                     <button
