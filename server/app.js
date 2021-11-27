@@ -207,7 +207,7 @@ app.get('/login', (req, res) => {
   })
 });
 
-// Add RO API
+// Add RO into the database
 app.get('/add-ro', (req, res) => {
   const {name, email, password} = req.query;
   const sql_query = `INSERT INTO RO VALUES ("${email}", "${name}", "${password}")`;
@@ -217,12 +217,40 @@ app.get('/add-ro', (req, res) => {
       console.log("RO already exists", err.message);
       throw err;
     }
-    res.send("Successfully added RO in the RO table")
+    res.send({result: result, message: "Successfully added RO in the RO table"})
   })
 });
 
-// Enroll Student
-app.get('/enroll-student', (req, res) => {
+// Add Instructor into the database
+app.get('/add-instructor', (req, res) => {
+  const {name, email, password, department} = req.query;
+  const sql_query = `INSERT INTO Instructor VALUES ("${email}", "${name}", "${password}", "${department}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("INSTRUCTOR already exists", err.message);
+      throw err;
+    }
+    res.send({result: result, message: "Successfully added INSTRUCTOR in the INSTRUCTOR table"})
+  })
+});
+
+// Remove Instructor into the database
+app.get('/remove-instructor', (req, res) => {
+  const {email} = req.query;
+  const sql_query = `DELETE FROM Instructor WHERE i_email = "${email}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Couldn't Delete Instructor", err.message);
+      throw err;
+    }
+    res.send({result: result, message: "Successfully deleted INSTRUCTOR from the INSTRUCTOR table"})
+  })
+});
+
+// Add Student
+app.get('/add-student', (req, res) => {
   const {name, email, password, roll_number} = req.query;
   
   const sql_query = `INSERT INTO Student VALUES ("${roll_number}", "${email}", "${name}", "${password}")`;
@@ -230,9 +258,52 @@ app.get('/enroll-student', (req, res) => {
   db.query(sql_query, (err, result) => {
     if(err) {
       console.log("Student already exists", err.message);
-      // throw err;
-      return;
+      throw err;
     }
     res.send({enrolled: true, message: "Successfully enrolled Student in the Student table"})
+  })
+});
+
+// Remove Student from the database
+app.get('/remove-student', (req, res) => {
+  const {roll_number} = req.query;
+  const sql_query = `DELETE FROM Student WHERE roll_number = "${roll_number}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Couldn't Delete Student", err.message);
+      throw err;
+    }
+    res.send({result: result, message: "Successfully deleted Student from the Student table"})
+  })
+});
+
+// Enroll Student
+app.get('/enroll-student', (req, res) => {
+  const {course_id, roll_number} = req.query;
+  
+  const sql_query = `INSERT INTO Takes VALUES ("${course_id}", "${roll_number}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Student is already enrolled in a course", err.message);
+      throw err;
+    }
+    res.send({enrolled: true, message: "Successfully enrolled Student in the course"})
+  })
+});
+
+// Create Course
+app.get('/create-course', (req, res) => {
+  const {course_id, name, course_code, department, credit_hours, semester, year, r_email, i_email} = req.query;
+  
+  const sql_query = `INSERT INTO Courses VALUES ("${course_id}", "${name}", "${course_code}", "${department}", "${credit_hours}", "${semester}", "${year}", "${r_email}", "${i_email}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Course already exists", err.message);
+      throw err;
+    }
+    res.send({enrolled: true, message: "Successfully added Course in the Course table"})
   })
 });
