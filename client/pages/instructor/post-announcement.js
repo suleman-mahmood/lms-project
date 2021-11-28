@@ -25,7 +25,7 @@ export default function Dashboard() {
       dateNow.toISOString().split("T")[0] +
       " " +
       dateNow.toTimeString().split(" ")[0];
-
+    
     const requestUrl = `http://localhost:3010/post-announcement?ann_id=${ann_id}&description=${announcement}&time=${current_time}&course_id=${course_id}`;
     fetch(requestUrl)
       .then((response) => {

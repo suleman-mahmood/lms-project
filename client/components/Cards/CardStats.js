@@ -19,9 +19,9 @@ export default function CardStats({
                 {statTitle}
               </span>
             </div>
-            </div>
-            </div>
-            </div>
+          </div>
+        </div>
+      </div>
           
     </>
   );
