@@ -378,8 +378,13 @@ app.get('/delete-quiz', (req, res) => {
   })
 })
 
-app.get('/create-assignment', (req, res) => {
-  const {a_id, blob, open_date, close_date, course_id} = req.query;
+app.post('/create-assignment', (req, res) => {
+  const {a_id, open_date, close_date, course_id} = req.query;
+  const blob = req.body
+
+  console.log("I am invoked");
+  console.log(req.query);
+  console.log(req.body);
 
   const sql_query = `INSERT INTO Assignments VALUES ("${a_id}", "${blob}", "${open_date}", "${close_date}", "${course_id}")`;
 

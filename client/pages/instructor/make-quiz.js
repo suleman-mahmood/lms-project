@@ -10,8 +10,6 @@ import CardStats  from "components/Cards/CardStats";
 // layout for page
 
 import Instructor from "layouts/Instructor.js";
-import { backgroundColor } from "tailwindcss/defaulttheme";
-import { white } from "tailwindcss/colors";
 
 export default function Dashboard() {
 
@@ -72,19 +70,6 @@ export default function Dashboard() {
       </div>
     </>
   );
-}
-
-const x = 5;
-
-const func = (x,y,z) => {
-
-  const [name, setName] = useState("Musa")
-
-  return (
-    <div>
-      <h1>Hello world</h1>
-    </div>
-  )
 }
 
 Dashboard.layout = Instructor;
