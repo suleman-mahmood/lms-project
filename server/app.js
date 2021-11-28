@@ -1,6 +1,5 @@
 const express = require('express');
 const mysql = require('mysql');
-const { number } = require('prop-types');
 
 const app = express();
 
@@ -178,20 +177,22 @@ app.get('/init-db', (req, res) => {
   })
 });
 
+// -----------------------------------------RO IMPLEMENTATION ---------------------------------------------------------
+
 // Login API
 app.get('/login', (req, res) => {
   const {email, password} = req.query;
-  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}"`;
+  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}" and r_password = "${password}"`;
 
   db.query(sql_query, (err, result) => {
     if(result.length === 0) {
       console.log("RO doesn't exist");
-      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}"`;
+      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}" and i_password = "${password}"`;
 
       db.query(sql_query, (err, result) => {
         if(result.length === 0){
           console.log("Instructor doesn't exist");
-          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}"`;
+          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}" and s_password = "${password}"`;
 
           db.query(sql_query, (err, result) => {
             if(result.length === 0){
@@ -208,7 +209,7 @@ app.get('/login', (req, res) => {
   })
 });
 
-// Add RO API
+// Add RO into the database
 app.get('/add-ro', (req, res) => {
   const {name, email, password} = req.query;
   const sql_query = `INSERT INTO RO VALUES ("${email}", "${name}", "${password}")`;
@@ -218,12 +219,40 @@ app.get('/add-ro', (req, res) => {
       console.log("RO already exists", err.message);
       throw err;
     }
-    res.send("Successfully added RO in the RO table")
+    res.send({result: result, message: "Successfully added RO in the RO table"})
   })
 });
 
-// Enroll Student
-app.get('/enroll-student', (req, res) => {
+// Add Instructor into the database
+app.get('/add-instructor', (req, res) => {
+  const {name, email, password, department} = req.query;
+  const sql_query = `INSERT INTO Instructor VALUES ("${email}", "${name}", "${password}", "${department}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("INSTRUCTOR already exists", err.message);
+      throw err;
+    }
+    res.send({result: result, message: "Successfully added INSTRUCTOR in the INSTRUCTOR table"})
+  })
+});
+
+// Remove Instructor into the database
+app.get('/remove-instructor', (req, res) => {
+  const {email} = req.query;
+  const sql_query = `DELETE FROM Instructor WHERE i_email = "${email}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Couldn't Delete Instructor", err.message);
+      throw err;
+    }
+    res.send({result: result, message: "Successfully deleted INSTRUCTOR from the INSTRUCTOR table"})
+  })
+});
+
+// Add Student
+app.get('/add-student', (req, res) => {
   const {name, email, password, roll_number} = req.query;
   
   const sql_query = `INSERT INTO Student VALUES ("${roll_number}", "${email}", "${name}", "${password}")`;
@@ -231,9 +260,159 @@ app.get('/enroll-student', (req, res) => {
   db.query(sql_query, (err, result) => {
     if(err) {
       console.log("Student already exists", err.message);
-      // throw err;
-      return;
+      throw err;
     }
     res.send({enrolled: true, message: "Successfully enrolled Student in the Student table"})
   })
 });
+
+// Remove Student from the database
+app.get('/remove-student', (req, res) => {
+  const {roll_number} = req.query;
+  const sql_query = `DELETE FROM Student WHERE roll_number = "${roll_number}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Couldn't Delete Student", err.message);
+      throw err;
+    }
+    res.send({result: result, message: "Successfully deleted Student from the Student table"})
+  })
+});
+
+// Enroll Student
+app.get('/enroll-student', (req, res) => {
+  const {course_id, roll_number} = req.query;
+  
+  const sql_query = `INSERT INTO Takes VALUES (${course_id}, "${roll_number}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Student is already enrolled in a course", err.message);
+      throw err;
+    }
+    res.send({enrolled: true, message: "Successfully enrolled Student in the course"})
+  })
+});
+
+// Create Course
+app.get('/create-course', (req, res) => {
+  const {course_id, name, course_code, department, credit_hours, semester, year, r_email, i_email} = req.query;
+  
+  const sql_query = `INSERT INTO Courses VALUES ("${course_id}", "${name}", "${course_code}", "${department}", "${credit_hours}", "${semester}", "${year}", "${r_email}", "${i_email}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      console.log("Course already exists", err.message);
+      throw err;
+    }
+    res.send({enrolled: true, message: "Successfully added Course in the Course table"})
+  })
+});
+
+// -----------------------------------------INSTRUCTOR IMPLEMENTATION --------------------------------------------------
+
+app.get('/courses-taught', (req, res) => {
+  const {email} = req.query;
+
+  const sql_query = `SELECT * FROM Courses WHERE i_email = "${email}"`
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/roster', (req, res) => {
+  const {course_id} = req.query;
+
+  const sql_query = `SELECT * FROM Student WHERE roll_number in (SELECT roll_number FROM Takes WHERE course_id = "${course_id}")`
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-quiz', (req, res) => {
+  const {quiz_id, no_of_ques, start_time, end_time, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Quizes VALUES ("${quiz_id}", "${no_of_ques}", "${start_time}", "${end_time}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-question', (req, res) => {
+  const {ques_id, marks, prompt, opt_1, opt_2, opt_3, opt_4, answer, quiz_id} = req.query;
+
+  const sql_query = `INSERT INTO Questions VALUES ("${ques_id}", "${marks}", "${prompt}", "${opt_1}", "${opt_2}", "${opt_3}", "${opt_4}", "${answer}", "${quiz_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+// Delete the entire quiz and as well as all its associated questions
+app.get('/delete-quiz', (req, res) => {
+  const {quiz_id} = req.query;
+
+  const sql_query = `DELETE FROM Questions WHERE quiz_id = "${quiz_id}"; DELETE FROM Quizes WHERE quiz_id = "${quiz_id}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-assignment', (req, res) => {
+  const {a_id, blob, open_date, close_date, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Assignments VALUES ("${a_id}", "${blob}", "${open_date}", "${close_date}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/upload-resources', (req, res) => {
+  const {r_id, blob, type, upload_date, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Resources VALUES ("${r_id}", "${blob}", "${type}", "${upload_date}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/post-announcement', (req, res) => {
+  const {ann_id, description, time, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Announcements VALUES ("${ann_id}", "${description}", "${time}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
