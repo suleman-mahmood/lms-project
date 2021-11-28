@@ -6,11 +6,13 @@ import Admin from "layouts/Admin.js";
 
 export default function Dashboard() {
 
-  const [courseid, setCourseId] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/enroll-student?course_id=${courseid}&roll_number=${rollNumber}`; 
+    const requestUrl = `http://localhost:3010/enroll-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`; 
     fetch(requestUrl)
     .then(response => {
       response.json()
@@ -31,24 +33,53 @@ export default function Dashboard() {
     <>
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-
-        <div className="relative w-full mb-3">
+          <div className="relative w-full mb-3">
             <label
               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               htmlFor="grid-password"
             >
-              Course ID
+              Email
             </label>
             <input
-              // type="password"
+              type="email"
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="Course ID"
-              value={courseid}
-              onChange={(e) => {setCourseId(e.target.value)}}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {setEmail(e.target.value)}}
             />
-        </div>
+          </div>
 
-          
+          <div className="relative w-full mb-3">
+            <label
+              className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlFor="grid-password"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {setPassword(e.target.value)}}
+            />
+          </div>
+
+          <div className="relative w-full mb-3">
+            <label
+              className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlFor="grid-password"
+            >
+              Name
+            </label>
+            <input
+              // type="email"
+              className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => {setName(e.target.value)}}
+            />
+          </div>
 
           <div className="relative w-full mb-3">
             <label

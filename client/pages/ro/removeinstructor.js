@@ -6,11 +6,11 @@ import Admin from "layouts/Admin.js";
 
 export default function Dashboard() {
 
-  const [courseid, setCourseId] = useState("");
-  const [rollNumber, setRollNumber] = useState("");
+  
+  const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/enroll-student?course_id=${courseid}&roll_number=${rollNumber}`; 
+    const requestUrl = `http://localhost:3010/remove-instructor?email=${email}`; 
     fetch(requestUrl)
     .then(response => {
       response.json()
@@ -31,23 +31,6 @@ export default function Dashboard() {
     <>
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-
-        <div className="relative w-full mb-3">
-            <label
-              className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              htmlFor="grid-password"
-            >
-              Course ID
-            </label>
-            <input
-              // type="password"
-              className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="Course ID"
-              value={courseid}
-              onChange={(e) => {setCourseId(e.target.value)}}
-            />
-        </div>
-
           
 
           <div className="relative w-full mb-3">
@@ -55,14 +38,14 @@ export default function Dashboard() {
               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               htmlFor="grid-password"
             >
-              Roll Number
+              Email
             </label>
             <input
               type="email"
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="Roll Number"
-              value={rollNumber}
-              onChange={(e) => {setRollNumber(e.target.value)}}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {setEmail(e.target.value)}}
             />
           </div>
 
@@ -72,7 +55,7 @@ export default function Dashboard() {
               type="button"
               onClick={() => {handleSubmit()}}
             >
-              Enroll Student
+              Remove Instructor
             </button>
           </div>
         </div>
