@@ -35,7 +35,6 @@ export default function Dashboard(params) {
 
   return (
     <>
-     
       <h1 style={{ color: 'DarkSlateGray' , fontSize:"40px" ,fontStyle: "italic" }}>Welcome to Instructor's Dashboard</h1>
     </>
   );

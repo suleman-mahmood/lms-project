@@ -32,7 +32,7 @@ export default function Dashboard() {
       })
       .catch((err) => {
         console.log(err.message);
-        setErrorMessage("Failed to add Student");
+        setErrorMessage("Failed to Add Resource");
       });
   };
 
@@ -84,7 +84,7 @@ export default function Dashboard() {
             </button>
           </div>
 
-          {errorMessage}
+          <p className="" >{errorMessage}</p>
         </div>
       </div>
     </>
