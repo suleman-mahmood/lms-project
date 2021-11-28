@@ -14,11 +14,11 @@ export default function Auth({ children }) {
           <div
             className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
             style={{
-              backgroundImage: "url('/img/register_bg_2.png')",
+              backgroundImage: "url('https://lums.edu.pk/sites/default/files/styles/international_955x716/public/2020-05/DJI_0005%20copy_0.jpg?h=da92fc0b')",
             }}
           ></div>
           {children}
-          <FooterSmall absolute />
+          {/* <FooterSmall absolute /> */}
         </section>
       </main>
     </>

@@ -32,20 +32,27 @@ export default function Dashboard() {
 
   return (
     <>
+      <br />
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <div className="flex flex-wrap">
-            {data.map((item, i) => {
-              return (
-                <div key={i} className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2">
-                  <CardStats
-                    statSubtitle={item.roll_number}
-                    statTitle={item.s_name}
-                  />
-                </div>
-              );
-            })}
+            {data
+              ? data.map((item, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
+                    >
+                      <CardStats
+                        statSubtitle={item.roll_number}
+                        statTitle={item.s_name}
+                      />
+                    </div>
+                  );
+                })
+              : null}
           </div>
+
         </div>
       </div>
     </>

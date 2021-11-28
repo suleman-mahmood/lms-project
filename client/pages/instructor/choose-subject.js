@@ -40,8 +40,14 @@ export default function Dashboard(params) {
     <>
       {/* Header */}
       <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
-        <div className="px-4 md:px-10 mx-auto w-full">
+        <div className="px-3 md:px-10 mx-auto w-full h-1/2">
           <div className="flex flex-wrap">
+          <div
+            className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
+            style={{
+              backgroundImage: "url('https://images.pexels.com/photos/37539/colored-pencils-colour-pencils-mirroring-color-37539.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')",
+            }}
+          ></div>
             <div
               onClick={() => {
                 Router.push({

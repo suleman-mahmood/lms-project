@@ -34,12 +34,14 @@ export default function Dashboard() {
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <div className="relative w-full mb-3">
-            <label
+            <br/>
+            <label style={{color: 'darkslategray', fontSize:"20px"}}
               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               htmlFor="grid-password"
             >
               Open Date
             </label>
+            
             <input
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="MM/DD/YYYY"
@@ -51,12 +53,14 @@ export default function Dashboard() {
           </div>
 
           <div className="relative w-full mb-3">
-            <label
+          <br/>
+            <label style={{color: 'darkslategray', fontSize:"20px"}}
               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               htmlFor="grid-password"
             >
               Close Date
             </label>
+            
             <input
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="MM/DD/YYYY"
@@ -87,7 +91,7 @@ export default function Dashboard() {
                 handleSubmit();
               }}
             >
-              Enroll Student
+              Add File
             </button>
           </div>
 

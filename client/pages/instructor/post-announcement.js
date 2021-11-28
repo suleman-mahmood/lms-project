@@ -44,14 +44,15 @@ export default function Dashboard() {
 
   return (
     <>
+    <br/>
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <div className="relative w-full mb-3">
             <label
-              className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              className="block uppercase text-blueGray-600 text-xl font-bold mb-2"
               htmlFor="grid-password"
             >
-              Announcement Text
+              Post Announcement in the text box
             </label>
             <textarea
               value={announcement}
