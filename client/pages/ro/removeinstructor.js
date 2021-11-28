@@ -8,22 +8,20 @@ export default function Dashboard() {
 
   
   const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/remove-instructor?email=${email}`; 
+    const requestUrl = `http://localhost:3010/remove-instructor?email=${email}`;
     fetch(requestUrl)
     .then(response => {
       response.json()
       .then(data => {
-        // console.log("Fetching Data:", data);
-
-        if(data.enrolled){
-          console.log(data.message);
-        }
-        else{
-          console.log("There was an error in request");
-        }
+        console.log(data)
+        setErrorMessage(data.message)
       })
+    })
+    .catch(err => {
+      setErrorMessage("Failed to remove Instructor")
     })
   }
 
@@ -58,6 +56,7 @@ export default function Dashboard() {
               Remove Instructor
             </button>
           </div>
+          {errorMessage}
         </div>
       </div>
     </>

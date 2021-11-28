@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleSubmit = () => {
     const requestUrl = `http://localhost:3010/add-instructor?name=${name}&email=${email}&password=${password}&department=${department}`; 
@@ -17,15 +18,11 @@ export default function Dashboard() {
     .then(response => {
       response.json()
       .then(data => {
-        // console.log("Fetching Data:", data);
-
-        if(data.enrolled){
-          console.log(data.message);
-        }
-        else{
-          console.log("There was an error in request");
-        }
+        console.log(data)
       })
+    })
+    .catch(err => {
+      setErrorMessage("Failed to add Instructor")
     })
   }
 
@@ -106,6 +103,7 @@ export default function Dashboard() {
               Add Instructor
             </button>
           </div>
+          <p>{errorMessage}</p>
         </div>
       </div>
     </>

@@ -299,7 +299,7 @@ app.get('/enroll-student', (req, res) => {
 app.get('/create-course', (req, res) => {
   const {course_id, name, course_code, department, credit_hours, semester, year, r_email, i_email} = req.query;
   
-  const sql_query = `INSERT INTO Courses VALUES ("${course_id}", "${name}", "${course_code}", "${department}", "${credit_hours}", "${semester}", "${year}", "${r_email}", "${i_email}")`;
+  const sql_query = `INSERT INTO Courses VALUES ("${course_id}", "${name}", "${course_code}", "${department}", ${credit_hours}, "${semester}", "${year}", "${r_email}", "${i_email}")`;
 
   db.query(sql_query, (err, result) => {
     if(err) {

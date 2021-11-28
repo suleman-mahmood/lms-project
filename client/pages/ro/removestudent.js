@@ -8,6 +8,7 @@ export default function Dashboard() {
 
   
   const [rollNumber, setRollNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleSubmit = () => {
     const requestUrl = `http://localhost:3010/remove-student?roll_number=${rollNumber}`; 
@@ -15,15 +16,12 @@ export default function Dashboard() {
     .then(response => {
       response.json()
       .then(data => {
-        // console.log("Fetching Data:", data);
-
-        if(data.enrolled){
-          console.log(data.message);
-        }
-        else{
-          console.log("There was an error in request");
-        }
+        console.log(data)
+        setErrorMessage(data.message)
       })
+    })
+    .catch(err => {
+      setErrorMessage("Failed to remove Student")
     })
   }
 
@@ -58,6 +56,7 @@ export default function Dashboard() {
               Remove Student
             </button>
           </div>
+          {errorMessage}
         </div>
       </div>
     </>

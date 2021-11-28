@@ -10,22 +10,19 @@ export default function Dashboard() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/enroll-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`; 
+    const requestUrl = `http://localhost:3010/add-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`; 
     fetch(requestUrl)
     .then(response => {
       response.json()
       .then(data => {
-        // console.log("Fetching Data:", data);
-
-        if(data.enrolled){
-          console.log(data.message);
-        }
-        else{
-          console.log("There was an error in request");
-        }
+        console.log(data)
       })
+    })
+    .catch(err => {
+      setErrorMessage("Failed to add Student")
     })
   }
 
@@ -106,6 +103,7 @@ export default function Dashboard() {
               Enroll Student
             </button>
           </div>
+          {errorMessage}
         </div>
       </div>
     </>
