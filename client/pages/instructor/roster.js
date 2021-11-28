@@ -35,7 +35,7 @@ export default function Dashboard() {
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <div className="flex flex-wrap">
-            {data.map((item, i) => {
+            { data ? data.map((item, i) => {
               return (
                 <div key={i} className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2">
                   <CardStats
@@ -44,7 +44,7 @@ export default function Dashboard() {
                   />
                 </div>
               );
-            })}
+            }) : null }
           </div>
         </div>
       </div>

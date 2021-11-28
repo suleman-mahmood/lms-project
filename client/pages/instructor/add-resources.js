@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
 import Instructor from "layouts/Instructor.js";
 
 export default function Dashboard() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
-  const [openDate, setOpenDate] = useState("");
-  const [closeDate, setCloseDate] = useState("");
   const [fileData, setFileData] = useState();
   const [course_id, setCourse_id] = useState("");
+  const [fileType, setFileType] = useState();
 
   useEffect(() => {
     setCourse_id(router.query.course_id);
   }, []);
 
   const handleSubmit = () => {
-    const a_id = Math.floor(Math.random() * 1000000);
-    const requestUrl = `http://localhost:3010/create-assignment?a_id=${a_id}&open_date=${openDate}&close_date=${closeDate}&course_id=${course_id}`;
-    fetch(requestUrl, {method:"POST", body: fileData})
+    const dateNow = new Date();
+    const current_time =
+      dateNow.toISOString().split("T")[0] +
+      " " +
+      dateNow.toTimeString().split(" ")[0];
+    const r_id = Math.floor(Math.random() * 1000000);
+
+    const requestUrl = `http://localhost:3010/upload-resources?r_id=${r_id}&type=${fileType}&upload_date=${current_time}&course_id=${course_id}`;
+    fetch(requestUrl, { method: "POST", body: fileData })
       .then((response) => {
         response.json().then((data) => {
           console.log(data);
+          setErrorMessage("Added Resource");
         });
       })
       .catch((err) => {
@@ -33,36 +40,20 @@ export default function Dashboard() {
     <>
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
+          
           <div className="relative w-full mb-3">
             <label
               className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               htmlFor="grid-password"
             >
-              Open Date
+              File Type
             </label>
             <input
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="MM/DD/YYYY"
-              value={openDate}
+              placeholder="File Type"
+              value={fileType}
               onChange={(e) => {
-                setOpenDate(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="relative w-full mb-3">
-            <label
-              className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              htmlFor="grid-password"
-            >
-              Close Date
-            </label>
-            <input
-              className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="MM/DD/YYYY"
-              value={closeDate}
-              onChange={(e) => {
-                setCloseDate(e.target.value);
+                setFileType(e.target.value);
               }}
             />
           </div>
@@ -87,7 +78,7 @@ export default function Dashboard() {
                 handleSubmit();
               }}
             >
-              Enroll Student
+              Add Resource
             </button>
           </div>
 

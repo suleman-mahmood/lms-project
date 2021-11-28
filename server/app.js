@@ -396,8 +396,9 @@ app.post('/create-assignment', (req, res) => {
   })
 })
 
-app.get('/upload-resources', (req, res) => {
-  const {r_id, blob, type, upload_date, course_id} = req.query;
+app.post('/upload-resources', (req, res) => {
+  const {r_id, type, upload_date, course_id} = req.query;
+  const blob = req.body
 
   const sql_query = `INSERT INTO Resources VALUES ("${r_id}", "${blob}", "${type}", "${upload_date}", "${course_id}")`;
 
