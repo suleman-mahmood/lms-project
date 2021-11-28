@@ -177,20 +177,22 @@ app.get('/init-db', (req, res) => {
   })
 });
 
+// -----------------------------------------RO IMPLEMENTATION ---------------------------------------------------------
+
 // Login API
 app.get('/login', (req, res) => {
   const {email, password} = req.query;
-  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}"`;
+  const sql_query = `SELECT * FROM RO WHERE r_email = "${email}" and r_password = "${password}"`;
 
   db.query(sql_query, (err, result) => {
     if(result.length === 0) {
       console.log("RO doesn't exist");
-      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}"`;
+      const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}" and i_password = "${password}"`;
 
       db.query(sql_query, (err, result) => {
         if(result.length === 0){
           console.log("Instructor doesn't exist");
-          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}"`;
+          const sql_query = `SELECT * FROM Student WHERE s_email = "${email}" and s_password = "${password}"`;
 
           db.query(sql_query, (err, result) => {
             if(result.length === 0){
@@ -282,7 +284,7 @@ app.get('/remove-student', (req, res) => {
 app.get('/enroll-student', (req, res) => {
   const {course_id, roll_number} = req.query;
   
-  const sql_query = `INSERT INTO Takes VALUES ("${course_id}", "${roll_number}")`;
+  const sql_query = `INSERT INTO Takes VALUES (${course_id}, "${roll_number}")`;
 
   db.query(sql_query, (err, result) => {
     if(err) {
@@ -307,3 +309,110 @@ app.get('/create-course', (req, res) => {
     res.send({enrolled: true, message: "Successfully added Course in the Course table"})
   })
 });
+
+// -----------------------------------------INSTRUCTOR IMPLEMENTATION --------------------------------------------------
+
+app.get('/courses-taught', (req, res) => {
+  const {email} = req.query;
+
+  const sql_query = `SELECT * FROM Courses WHERE i_email = "${email}"`
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/roster', (req, res) => {
+  const {course_id} = req.query;
+
+  const sql_query = `SELECT * FROM Student WHERE roll_number in (SELECT roll_number FROM Takes WHERE course_id = "${course_id}")`
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-quiz', (req, res) => {
+  const {quiz_id, no_of_ques, start_time, end_time, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Quizes VALUES ("${quiz_id}", "${no_of_ques}", "${start_time}", "${end_time}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-question', (req, res) => {
+  const {ques_id, marks, prompt, opt_1, opt_2, opt_3, opt_4, answer, quiz_id} = req.query;
+
+  const sql_query = `INSERT INTO Questions VALUES ("${ques_id}", "${marks}", "${prompt}", "${opt_1}", "${opt_2}", "${opt_3}", "${opt_4}", "${answer}", "${quiz_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+// Delete the entire quiz and as well as all its associated questions
+app.get('/delete-quiz', (req, res) => {
+  const {quiz_id} = req.query;
+
+  const sql_query = `DELETE FROM Questions WHERE quiz_id = "${quiz_id}"; DELETE FROM Quizes WHERE quiz_id = "${quiz_id}"`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/create-assignment', (req, res) => {
+  const {a_id, blob, open_date, close_date, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Assignments VALUES ("${a_id}", "${blob}", "${open_date}", "${close_date}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/upload-resources', (req, res) => {
+  const {r_id, blob, type, upload_date, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Resources VALUES ("${r_id}", "${blob}", "${type}", "${upload_date}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+app.get('/post-announcement', (req, res) => {
+  const {ann_id, description, time, course_id} = req.query;
+
+  const sql_query = `INSERT INTO Announcements VALUES ("${ann_id}", "${description}", "${time}", "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
