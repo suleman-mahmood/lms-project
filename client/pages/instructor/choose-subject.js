@@ -12,7 +12,7 @@ import CardStats from "components/Cards/CardStats";
 import { useAtom } from "jotai";
 
 import Instructor from "layouts/Instructor.js";
-import { courseIdAtom, userEmailAtom } from "pages/state";
+import { courseIdAtom, userEmailAtom } from "components/state";
 
 export default function Dashboard(params) {
   const [email] = useAtom(userEmailAtom);

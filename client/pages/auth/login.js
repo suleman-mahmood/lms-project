@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAtom } from "jotai";
-import { userEmailAtom } from "pages/state";
+import { userEmailAtom } from "components/state";
 import Router from "next/router";
 import Auth from "layouts/Auth.js";
 

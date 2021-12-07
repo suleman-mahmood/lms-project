@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
-import { userEmailAtom } from "pages/state";
+import { userEmailAtom } from "components/state";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
