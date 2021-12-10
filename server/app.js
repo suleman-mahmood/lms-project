@@ -140,11 +140,11 @@ app.listen('3010', () => {
 
 // Create Connection to sql server
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: '34.124.181.136',
   user: 'root',
-  password: '',
+  password: '123',
   database: "lms",
-  multipleStatements: true
+  multipleStatements: true,
 })
 
 // Connect to the sql server
