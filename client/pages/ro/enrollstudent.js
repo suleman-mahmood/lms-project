@@ -7,7 +7,7 @@ export default function EnrollStudent() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/enroll-student?course_id=${courseid}&roll_number=${rollNumber}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/enroll-student?course_id=${courseid}&roll_number=${rollNumber}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

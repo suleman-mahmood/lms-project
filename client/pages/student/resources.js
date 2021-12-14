@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [data, setData] = useState();
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/get-resources?course_id=${router.query.course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-resources?course_id=${router.query.course_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

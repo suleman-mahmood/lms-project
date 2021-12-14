@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [fileData, setFileData] = useState();
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/get-assignments?course_id=${router.query.course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-assignments?course_id=${router.query.course_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
@@ -32,7 +32,7 @@ export default function Dashboard() {
       " " +
       dateNow.toTimeString().split(" ")[0];
 
-    const requestUrl = `http://localhost:3010/submit-assignment?a_id=${a_id}&email=${email}&time=${current_time}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/submit-assignment?a_id=${a_id}&email=${email}&time=${current_time}`;
     fetch(requestUrl, { method: "POST", body: fileData })
       .then((response) => {
         response.json().then(() => {

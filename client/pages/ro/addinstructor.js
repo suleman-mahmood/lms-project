@@ -9,7 +9,7 @@ export default function AddInstructor() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/add-instructor?name=${name}&email=${email}&password=${password}&department=${department}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/add-instructor?name=${name}&email=${email}&password=${password}&department=${department}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

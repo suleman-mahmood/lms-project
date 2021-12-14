@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     setErrorMessage("");
 
-    const requestUrl = `http://localhost:3010/login?email=${email}&password=${password}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/login?email=${email}&password=${password}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

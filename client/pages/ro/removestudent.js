@@ -6,7 +6,7 @@ export default function RemoveStudent() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/remove-student?roll_number=${rollNumber}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/remove-student?roll_number=${rollNumber}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

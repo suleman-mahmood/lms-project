@@ -38,7 +38,7 @@ export default function Dashboard() {
     const quiz_id = Math.floor(Math.random() * 1000000);
 
     // Create quiz first
-    const requestUrl = `http://localhost:3010/create-quiz?quiz_id=${quiz_id}&no_of_ques=${numberOfQuestions}&start_time=${start}&end_time=${close}&course_id=${course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/create-quiz?quiz_id=${quiz_id}&no_of_ques=${numberOfQuestions}&start_time=${start}&end_time=${close}&course_id=${course_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
@@ -58,7 +58,7 @@ export default function Dashboard() {
             const opt4 = questionData[index].opt4
             const answer = questionData[index].answer
             
-            const requestUrl = `http://localhost:3010/create-question?ques_id=${ques_id}&marks=${marks}&prompt=${prompt}&opt_1=${opt1}&opt_2=${opt2}&opt_3=${opt3}&opt_4=${opt4}&answer=${answer}&quiz_id=${quiz_id}`;
+            const requestUrl = `https://blockchange-29151.as.r.appspot.com/create-question?ques_id=${ques_id}&marks=${marks}&prompt=${prompt}&opt_1=${opt1}&opt_2=${opt2}&opt_3=${opt3}&opt_4=${opt4}&answer=${answer}&quiz_id=${quiz_id}`;
             promises.push(fetch(requestUrl))
           }
 

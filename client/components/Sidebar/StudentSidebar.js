@@ -12,7 +12,7 @@ export default function Sidebar() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/get-courses?email=${email}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-courses?email=${email}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

@@ -22,7 +22,7 @@ export default function Dashboard() {
       dateNow.toTimeString().split(" ")[0];
     const r_id = Math.floor(Math.random() * 1000000);
 
-    const requestUrl = `http://localhost:3010/upload-resources?r_id=${r_id}&type=${fileType}&upload_date=${current_time}&course_id=${course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/upload-resources?r_id=${r_id}&type=${fileType}&upload_date=${current_time}&course_id=${course_id}`;
     fetch(requestUrl, { method: "POST", body: fileData })
       .then((response) => {
         response.json().then((data) => {

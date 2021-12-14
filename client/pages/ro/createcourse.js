@@ -14,7 +14,7 @@ export default function CreateCourse() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/create-course?course_id=${courseid}&name=${name}&course_code=${coursecode}&department=${department}&credit_hours=${credithours}&semester=${semester}&year=${year}&r_email=${coursecreatoremail}&i_email=${instructoremail}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/create-course?course_id=${courseid}&name=${name}&course_code=${coursecode}&department=${department}&credit_hours=${credithours}&semester=${semester}&year=${year}&r_email=${coursecreatoremail}&i_email=${instructoremail}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

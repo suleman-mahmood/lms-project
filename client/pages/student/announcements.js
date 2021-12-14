@@ -18,7 +18,7 @@ export default function Dashboard() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/get-announcements?course_id=${router.query.course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-announcements?course_id=${router.query.course_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

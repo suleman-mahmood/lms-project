@@ -26,7 +26,7 @@ export default function Dashboard() {
       " " +
       dateNow.toTimeString().split(" ")[0];
     
-    const requestUrl = `http://localhost:3010/post-announcement?ann_id=${ann_id}&description=${announcement}&time=${current_time}&course_id=${course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/post-announcement?ann_id=${ann_id}&description=${announcement}&time=${current_time}&course_id=${course_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

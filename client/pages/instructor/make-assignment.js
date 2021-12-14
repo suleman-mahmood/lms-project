@@ -19,7 +19,7 @@ export default function Dashboard() {
     const close = closeDate.split("T")[0] + " " + closeDate.split("T")[1];
     const a_id = Math.floor(Math.random() * 1000000);
 
-    const requestUrl = `http://localhost:3010/create-assignment?a_id=${a_id}&open_date=${open}&close_date=${close}&course_id=${course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/create-assignment?a_id=${a_id}&open_date=${open}&close_date=${close}&course_id=${course_id}`;
     fetch(requestUrl, { method: "POST", body: fileData })
       .then((response) => {
         response.json().then((data) => {

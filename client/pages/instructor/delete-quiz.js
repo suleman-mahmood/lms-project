@@ -9,7 +9,7 @@ export default function Dashboard() {
 
   const handleSubmit = () => {
 
-    const requestUrl = `http://localhost:3010/delete-quiz?quiz_id=${quizId}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/delete-quiz?quiz_id=${quizId}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

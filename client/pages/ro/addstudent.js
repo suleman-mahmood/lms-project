@@ -9,7 +9,7 @@ export default function AddStudent() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/add-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/add-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

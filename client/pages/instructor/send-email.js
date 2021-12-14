@@ -12,7 +12,7 @@ export default function Dashboard() {
   const [messageBody, setMessageBody] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/send-email?to=${recipent}&subject=${subject}&text=${messageBody}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/send-email?to=${recipent}&subject=${subject}&text=${messageBody}`;
     fetch(requestUrl)
       .then((response) => {
         setErrorMessage("Email Sent Successfully");

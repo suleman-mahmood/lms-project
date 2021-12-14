@@ -8,7 +8,7 @@ export default function Dashboard(params) {
   const [, setData] = useState([]);
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/courses-taught?email=${email}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/courses-taught?email=${email}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {

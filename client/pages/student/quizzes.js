@@ -28,7 +28,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/get-quizzes?course_id=${router.query.course_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-quizzes?course_id=${router.query.course_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
@@ -36,7 +36,7 @@ export default function Dashboard() {
           setData(data);
 
           // Get Quiz Answers
-          const requestUrl = `http://localhost:3010/get-quiz-answers?email=${email}`;
+          const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-quiz-answers?email=${email}`;
           fetch(requestUrl)
             .then((response) => {
               response.json().then((data) => {
@@ -75,7 +75,7 @@ export default function Dashboard() {
     }
 
     // Fetch quiz data
-    const requestUrl = `http://localhost:3010/get-questions?quiz_id=${quiz_data.quiz_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-questions?quiz_id=${quiz_data.quiz_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
@@ -89,7 +89,7 @@ export default function Dashboard() {
   };
 
   const handleCheckMarks = (quiz_data) => {
-    const requestUrl = `http://localhost:3010/get-questions?quiz_id=${quiz_data.quiz_id}`;
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/get-questions?quiz_id=${quiz_data.quiz_id}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
@@ -126,7 +126,7 @@ export default function Dashboard() {
       " " +
       dateNow.toTimeString().split(" ")[0];
 
-    const requestUrl = `http://localhost:3010/submit-quiz?quiz_id=${
+    const requestUrl = `https://blockchange-29151.as.r.appspot.com/submit-quiz?quiz_id=${
       currentQuizData[0].quiz_id
     }&email=${email}&time=${current_time}&answers=${JSON.stringify(
       radioValue
