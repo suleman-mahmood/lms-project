@@ -1,30 +1,25 @@
-import React, {useState} from "react";
-
-// layout for page
+import React, { useState } from "react";
 
 import Ro from "layouts/Ro.js";
-
-export default function Dashboard() {
-
+export default function AddStudent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = () => {
-    const requestUrl = `http://localhost:3010/add-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`; 
+    const requestUrl = `http://localhost:3010/add-student?name=${name}&email=${email}&password=${password}&roll_number=${rollNumber}`;
     fetch(requestUrl)
-    .then(response => {
-      response.json()
-      .then(data => {
-        console.log(data)
+      .then((response) => {
+        response.json().then((data) => {
+          setErrorMessage(data.message);
+        });
       })
-    })
-    .catch(err => {
-      setErrorMessage("Failed to add Student")
-    })
-  }
+      .catch((err) => {
+        setErrorMessage("Failed to add Student");
+      });
+  };
 
   return (
     <>
@@ -42,7 +37,9 @@ export default function Dashboard() {
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="Email"
               value={email}
-              onChange={(e) => {setEmail(e.target.value)}}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </div>
 
@@ -58,7 +55,9 @@ export default function Dashboard() {
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="Password"
               value={password}
-              onChange={(e) => {setPassword(e.target.value)}}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
           </div>
 
@@ -74,7 +73,9 @@ export default function Dashboard() {
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="Name"
               value={name}
-              onChange={(e) => {setName(e.target.value)}}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
           </div>
 
@@ -90,7 +91,9 @@ export default function Dashboard() {
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="Roll Number"
               value={rollNumber}
-              onChange={(e) => {setRollNumber(e.target.value)}}
+              onChange={(e) => {
+                setRollNumber(e.target.value);
+              }}
             />
           </div>
 
@@ -98,7 +101,9 @@ export default function Dashboard() {
             <button
               className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
               type="button"
-              onClick={() => {handleSubmit()}}
+              onClick={() => {
+                handleSubmit();
+              }}
             >
               Enroll Student
             </button>
@@ -110,4 +115,4 @@ export default function Dashboard() {
   );
 }
 
-Dashboard.layout = Ro;
+AddStudent.layout = Ro;

@@ -20,15 +20,9 @@ export default function Dashboard(params) {
   return (
     <>
       {/* Header */}
-      <div className="relative bg-blueGray-800 md:pt-32 pb-32 pt-12">
+      <div className="relative bg-blueGray-600 md:pt-32 pb-32 pt-12">
         <div className="px-3 md:px-10 mx-auto w-full h-1/2">
           <div className="flex flex-wrap">
-          <div
-            className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
-            style={{
-              backgroundImage: "url('https://images.pexels.com/photos/37539/colored-pencils-colour-pencils-mirroring-color-37539.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')",
-            }}
-          ></div>
             <div
               onClick={() => {
                 Router.push({
@@ -37,7 +31,7 @@ export default function Dashboard(params) {
                     query: router.query,
                 });
               }}
-              className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
             >
               <CardStats statSubtitle="" statTitle="Resources" />
             </div>
@@ -49,7 +43,7 @@ export default function Dashboard(params) {
                     query: router.query,
                 });
               }}
-              className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
             >
               <CardStats statSubtitle="" statTitle="Check Roster" />
             </div>
@@ -61,7 +55,7 @@ export default function Dashboard(params) {
                     query: router.query,
                 });
               }}
-              className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
             >
               <CardStats statSubtitle="" statTitle="Assignments" />
             </div>
@@ -73,7 +67,7 @@ export default function Dashboard(params) {
                     query: router.query,
                 });
               }}
-              className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
             >
               <CardStats statSubtitle="" statTitle="Quizzes" />
             </div>
@@ -85,7 +79,7 @@ export default function Dashboard(params) {
                     query: router.query,
                 });
               }}
-              className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
             >
               <CardStats statSubtitle="" statTitle="Announcements" />
             </div>

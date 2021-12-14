@@ -17,7 +17,7 @@ import { userEmailAtom } from "components/state";
 export default function Dashboard() {
   const [radioValue, setRadioValue] = useState({});
   const router = useRouter();
-  const [email, ] = useAtom(userEmailAtom);
+  const [email] = useAtom(userEmailAtom);
 
   const [data, setData] = useState();
   const [errorMessage, setErrorMessage] = useState();
@@ -78,7 +78,7 @@ export default function Dashboard() {
       .catch((err) => {
         console.log(err.message);
       });
-  }
+  };
 
   if (takeQuiz) {
     return (
@@ -145,7 +145,7 @@ export default function Dashboard() {
               );
             })
           : null}
-        <button onClick={submitQuiz} >Submit Quiz</button>
+        <button onClick={submitQuiz}>Submit Quiz</button>
       </>
     );
   } else {
@@ -160,7 +160,11 @@ export default function Dashboard() {
                       <p>Quiz ID: {quiz_data.quiz_id}</p>
                       <p>Quiz Start Time: {quiz_data.start_time}</p>
                       <p>Quiz End Time: {quiz_data.end_time}</p>
-                      <button onClick={() => handleTakeQuiz(quiz_data)}>
+
+                      <button
+                        onClick={() => handleTakeQuiz(quiz_data)}
+                        className="github-star mt-2 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
+                      >
                         Start Quiz
                       </button>
                     </div>

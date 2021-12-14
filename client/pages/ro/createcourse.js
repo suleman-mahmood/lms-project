@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 
-// layout for page
-
 import Ro from "layouts/Ro.js";
-
-export default function Dashboard() {
+export default function CreateCourse() {
   const [department, setDepartment] = useState("");
   const [year, setYear] = useState("");
   const [courseid, setCourseId] = useState("");
@@ -21,7 +18,6 @@ export default function Dashboard() {
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
-          console.log(data);
           setErrorMessage(data.message);
         });
       })
@@ -177,7 +173,14 @@ export default function Dashboard() {
 
           <div>
             Semester
-            <select value={semester} onChange={(e) => {setSemester(e.target.value)}}  name="semester" id="semester">
+            <select
+              value={semester}
+              onChange={(e) => {
+                setSemester(e.target.value);
+              }}
+              name="semester"
+              id="semester"
+            >
               <option value="">--SELECT A Semester--</option>
               <option value="summer">Summer</option>
               <option value="fall">Fall</option>
@@ -204,4 +207,4 @@ export default function Dashboard() {
   );
 }
 
-Dashboard.layout = Ro;
+CreateCourse.layout = Ro;

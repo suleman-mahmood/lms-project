@@ -1,9 +1,10 @@
 import React from "react";
 
+import Footer from "components/Footers/Footer.js";
+
 export default function Auth({ children }) {
   return (
     <>
-      {/* <Navbar transparent /> */}
       <main>
         <section className="relative w-full h-screen py-40 min-h-screen">
           <div
@@ -13,7 +14,7 @@ export default function Auth({ children }) {
             }}
           ></div>
           {children}
-          {/* <FooterSmall absolute /> */}
+          <Footer />
         </section>
       </main>
     </>

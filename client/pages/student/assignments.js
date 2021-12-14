@@ -7,7 +7,7 @@ import { userEmailAtom } from "components/state";
 export default function Dashboard() {
   const router = useRouter();
 
-  const [email, ] = useAtom(userEmailAtom);
+  const [email] = useAtom(userEmailAtom);
   const [errorMessage, setErrorMessage] = useState("");
   const [assignments, setAssignments] = useState();
   const [fileData, setFileData] = useState();
@@ -75,10 +75,12 @@ export default function Dashboard() {
                         }}
                       />
                     </label>
+
                     <button
                       onClick={() => {
                         handleSubmit(ass.a_id);
                       }}
+                      className="github-star mt-2 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg"
                     >
                       Submit Assignment
                     </button>

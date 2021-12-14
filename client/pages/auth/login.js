@@ -18,7 +18,6 @@ export default function Login() {
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
-
           if (data.access_level === "RO") {
             // Redirect to RO Dashboard
             Router.push({
@@ -65,7 +64,7 @@ export default function Login() {
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center mb-3">
                   <h6 className="text-blueGray-600 text-sm font-bold">
-                  Sign in with credentials
+                    Sign in with credentials
                   </h6>
                 </div>
                 {/* <div className="btn-wrapper text-center">
