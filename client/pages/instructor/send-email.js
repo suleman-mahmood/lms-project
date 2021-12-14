@@ -39,7 +39,7 @@ export default function Dashboard() {
 
             <input
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="File Type"
+              placeholder="Recipient Email"
               value={recipent}
               onChange={(e) => {
                 setRecipent(e.target.value);
@@ -59,7 +59,7 @@ export default function Dashboard() {
 
             <input
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-              placeholder="File Type"
+              placeholder="Subject"
               value={subject}
               onChange={(e) => {
                 setSubject(e.target.value);
@@ -81,7 +81,7 @@ export default function Dashboard() {
               }}
               className="form-textarea mt-1 block w-full"
               rows="3"
-              placeholder="Enter your announcement"
+              placeholder="Enter your Email body"
             ></textarea>
           </div>
 

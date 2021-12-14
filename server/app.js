@@ -146,8 +146,8 @@ app.listen(PORT, () => {
 
 // Create Connection to sql server
 const db = mysql.createConnection({
-  host: "35.247.187.42",
-  // socketPath: '/cloudsql/blockchange-29151:asia-southeast1:lms-sql-project',
+  // host: "35.247.187.42",
+  socketPath: '/cloudsql/blockchange-29151:asia-southeast1:lms-sql-project',
   user: "root",
   password: "123",
   database: "lms",
