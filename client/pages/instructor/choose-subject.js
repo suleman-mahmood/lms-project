@@ -62,6 +62,17 @@ export default function Dashboard(params) {
             <div
               onClick={() => {
                 Router.push({
+                  pathname: window.location.origin + "/instructor/delete-quiz",
+                  query: router.query,
+                });
+              }}
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
+            >
+              <CardStats statSubtitle="" statTitle="Delete Quiz" />
+            </div>
+            <div
+              onClick={() => {
+                Router.push({
                   pathname:
                     window.location.origin + "/instructor/post-announcement",
                   query: router.query,
@@ -70,6 +81,18 @@ export default function Dashboard(params) {
               className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
             >
               <CardStats statSubtitle="" statTitle="Post Announcement" />
+            </div>
+            <div
+              onClick={() => {
+                Router.push({
+                  pathname:
+                    window.location.origin + "/instructor/send-email",
+                  query: router.query,
+                });
+              }}
+              className="w-full lg:w-6/12 xl:w-4/12 px-4 mb-2"
+            >
+              <CardStats statSubtitle="" statTitle="Send Email" />
             </div>
           </div>
         </div>

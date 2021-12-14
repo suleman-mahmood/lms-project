@@ -1,7 +1,15 @@
 const express = require("express");
 const mysql = require("mysql");
-
+var nodemailer = require("nodemailer");
 const app = express();
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "sulemanmahmood99@gmail.com",
+    pass: "bqmksotvdptvqyjp",
+  },
+});
 
 const initialize_tables = `
 Create Table RO (
@@ -49,8 +57,6 @@ Create Table Takes(
   Foreign KEY (roll_number) REFERENCES Student (roll_number)
   
 );
-
-
 
 Create Table Quizes (
   quiz_id INT(4),
@@ -180,6 +186,213 @@ app.get("/init-db", (req, res) => {
       throw err;
     }
     res.send("Tables initialized and created....");
+  });
+});
+
+app.get("/clean-db", (req, res) => {
+  const sql_query = `
+  DELETE FROM Takes;
+
+  DELETE FROM submits_q;
+  DELETE FROM submits_a;
+
+  DELETE FROM Questions;
+  DELETE FROM Quizes;
+
+  DELETE FROM Announcements;
+  DELETE FROM Assignments;
+  DELETE FROM Resources;
+
+  DELETE FROM Courses;
+
+  DELETE FROM RO;
+  DELETE FROM Instructor;
+  DELETE FROM Student;
+  `;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      console.log("Error in cleaning tables", err.message);
+      throw err;
+    }
+    res.send("Tables cleaned....");
+  });
+});
+
+function sqlCallbackToPromise(sqlQuery) {
+  return new Promise(function (resolve, reject) {
+    db.query(sqlQuery, (err, rows) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+app.get("/populate-entries", (req, res) => {
+  let promise_list = [];
+  const namesList = [
+    "Janice Thompson",
+    "Carmen Wood",
+    "Dante Richardson",
+    "Izzy Marks",
+    "Josiah Mueller",
+    "Aniqa Webb",
+    "Samina Needham",
+    "Katie-Louise",
+    "Isla-Grace",
+    "Julian Rigby",
+    "Saarah Weston",
+    "Zohaib Rich",
+    "Jayden-James",
+    "Romeo Hoover",
+    "Radhika Porter",
+    "Delores Findlay",
+    "Evie-Mae",
+    "Katerina Wynn",
+    "Dalia Duran",
+    "Tobias Simon",
+    "Hayleigh Humphries",
+    "Maisy Burch",
+    "Jamaal Leblanc",
+    "Joss Howells",
+    "Zaid Bartlett",
+    "Stephen Wade",
+    "Rose Patrick",
+    "Tye Childs",
+    "Casey Gilmore",
+    "Dan Daly",
+    "Shayla Welsh",
+    "Otto Carey",
+    "Donell Johnson",
+    "Ezra Dotson",
+    "Elodie Milne",
+    "Ibraheem Rudd",
+    "Saif Heath",
+    "Darlene Chadwick",
+    "Mollie Burn",
+    "Abdurahman Spears",
+    "Lillie-Rose",
+    "Eden Monroe",
+    "Maira Pickett",
+    "Kasim Walsh",
+    "Antoine Bowman",
+    "Liliana Goldsmith",
+    "Letitia Ireland",
+    "Gideon Witt",
+    "Manuel Squires",
+    "Rory Woodard",
+    "Elara Whitehouse",
+    "Catrin Velasquez",
+    "Dominic Gallegos",
+    "Zayaan Ventura",
+    "Alessia Casey",
+    "Kerri Howe",
+    "Sherri Clarke",
+    "Heath Mann",
+    "Ajay Martins",
+    "Zoe Ferreira",
+    "Amit Harper",
+    "Madeline Wolfe",
+    "Michalina Cook",
+    "Kynan Merritt",
+    "Bayley Tillman",
+    "Roger Vu",
+    "Mercy Hamer",
+    "Gia Bishop",
+    "Ainsley James",
+    "Jad Cowan",
+    "Lexi-Mae",
+    "Mahnoor Pham",
+    "Ibrahim Vo",
+    "Lucie Wilkerson",
+    "Kasper Esparza",
+    "Tania Massey",
+    "Honor Rodriquez",
+    "Saim Villegas",
+    "Zacharia Sims",
+    "Mark Dillon",
+    "Lucas Dejesus",
+    "May Herbert",
+    "Niko Cummings",
+    "Dani Clayton",
+    "Zeenat Mccormack",
+    "Montel Branch",
+    "Jardel Huff",
+    "Kobie Dougherty",
+    "Tiarna Partridge",
+    "Elinor Mercado",
+    "Iosif Burrows",
+    "Teri Philip",
+    "Kie Pitt",
+    "Vinay Blackburn",
+    "Kyal Arias",
+    "Orlando Holcomb",
+    "Kristopher Mayer",
+    "Huw Lennon",
+    "Arabella Woodcock",
+    "Yusra Hilton",
+  ];
+
+  for (let index = 23007400; index < 23007400 + 3000; index++) {
+    const roll_number = index
+    const email = `${roll_number}@lums.edu.pk`;
+    const name = namesList[Math.floor(Math.random() * (namesList.length + 1))];
+    const password = "123";
+    const sql_query = `INSERT INTO Student VALUES ("${roll_number}", "${email}", "${name}", "${password}")`;
+
+    promise_list.push(sqlCallbackToPromise(sql_query));
+  }
+
+  Promise.all(promise_list).then(() => {
+    res.send("2500 students addedd successfully");
+  })
+});
+
+app.get("/enroll-multiple-students", (req, res) => {
+  let promise_list = [];
+  const course_id = '312';
+
+  for (let index = 23000100; index < 23000100 + 100; index++) {
+    const sql_query = `INSERT INTO Takes VALUES (${course_id}, "${index}")`;
+
+    promise_list.push(sqlCallbackToPromise(sql_query));
+  }
+
+  Promise.all(promise_list).then(() => {
+    res.send(`100 students enrolled into ${course_id}`);
+  })
+});
+
+app.get("/get-number-of-students", (req, res) => {
+  const sql_query = `SELECT Count(*) FROM Student`;
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result)
+  })
+})
+
+// Send Email API
+app.get("/send-email", (req, res) => {
+  const { to, subject, text } = req.query;
+
+  var mailOptions = {
+    from: "sulemanmahmood99@gmail.com",
+    to: to,
+    subject: subject,
+    text: text,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+      res.send(info.response);
+    }
   });
 });
 
@@ -535,7 +748,7 @@ app.get("/submit-quiz", (req, res) => {
   db.query(sql_query, (err, result) => {
     const { roll_number } = result[0];
 
-    const sql_query = `INSERT INTO submits_q VALUES ("${quiz_id}", "${roll_number}", "${time}", "${answers}")`;
+    const sql_query = `INSERT INTO submits_q VALUES ("${quiz_id}", "${roll_number}", "${time}", '${answers}')`;
 
     db.query(sql_query, (err, result) => {
       if (err) {
@@ -547,7 +760,7 @@ app.get("/submit-quiz", (req, res) => {
 });
 
 app.post("/submit-assignment", (req, res) => {
-  const { a_id, email, time} = req.query;
+  const { a_id, email, time } = req.query;
   const blob = req.body;
 
   const sql_query = `SELECT roll_number FROM Student WHERE s_email = '${email}'`;
@@ -570,9 +783,22 @@ app.post("/submit-assignment", (req, res) => {
 });
 
 app.get("/get-quiz-answers", (req, res) => {
-  const { roll_number } = req.query;
+  const { email } = req.query;
 
-  const sql_query = `SELECT * FROM submits_q WHERE roll_number = '${roll_number}'`;
+  const sql_query = `SELECT * FROM submits_q WHERE roll_number in (SELECT roll_number FROM Student WHERE s_email = '${email}')`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/delete-quiz-submissions", (req, res) => {
+  const { email } = req.query;
+
+  const sql_query = `DELETE FROM submits_q WHERE roll_number in (SELECT roll_number FROM Student WHERE s_email = '${email}')`;
 
   db.query(sql_query, (err, result) => {
     if (err) {
