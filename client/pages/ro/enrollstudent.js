@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 // layout for page
 
-import Admin from "layouts/Admin.js";
+import Ro from "layouts/Ro.js";
 
 export default function Dashboard() {
 
@@ -80,4 +80,4 @@ export default function Dashboard() {
   );
 }
 
-Dashboard.layout = Admin;
+Dashboard.layout = Ro;

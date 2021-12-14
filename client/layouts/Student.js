@@ -1,7 +1,6 @@
 import React from "react";
 
-// components
-import Sidebar from "components/Sidebar/InstructorSidebar.js";
+import Sidebar from "components/Sidebar/StudentSidebar";
 
 export default function Admin({ children }) {
   return (

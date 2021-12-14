@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Router from "next/router";
 
+// components
 
+// import CardLineChart from "components/Cards/CardLineChart.js";
+// import CardBarChart from "components/Cards/CardBarChart.js";
+// import CardPageVisits from "components/Cards/CardPageVisits.js";
+// import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 import CardStats from "components/Cards/CardStats";
 import { useAtom } from "jotai";
 
-import Instructor from "layouts/Instructor.js";
+import Student from "layouts/Student.js";
 import { courseIdAtom, userEmailAtom } from "components/state";
 
 export default function Dashboard(params) {
@@ -28,20 +33,20 @@ export default function Dashboard(params) {
               onClick={() => {
                 Router.push({
                   pathname:
-                    window.location.origin + "/instructor/add-resources",
-                  query: router.query,
+                    window.location.origin + "/student/resources",
+                    query: router.query,
                 });
               }}
               className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
             >
-              <CardStats statSubtitle="" statTitle="Add Resources" />
+              <CardStats statSubtitle="" statTitle="Resources" />
             </div>
             <div
               onClick={() => {
                 Router.push({
                   pathname:
-                    window.location.origin + "/instructor/roster",
-                  query: router.query,
+                    window.location.origin + "/student/roster",
+                    query: router.query,
                 });
               }}
               className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
@@ -52,37 +57,37 @@ export default function Dashboard(params) {
               onClick={() => {
                 Router.push({
                   pathname:
-                    window.location.origin + "/instructor/make-assignment",
-                  query: router.query,
+                    window.location.origin + "/student/assignments",
+                    query: router.query,
                 });
               }}
               className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
             >
-              <CardStats statSubtitle="" statTitle="Make Assignment" />
+              <CardStats statSubtitle="" statTitle="Assignments" />
             </div>
             <div
               onClick={() => {
                 Router.push({
                   pathname:
-                    window.location.origin + "/instructor/make-quiz",
-                  query: router.query,
+                    window.location.origin + "/student/quizzes",
+                    query: router.query,
                 });
               }}
               className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
             >
-              <CardStats statSubtitle="" statTitle="Make Quiz" />
+              <CardStats statSubtitle="" statTitle="Quizzes" />
             </div>
             <div
               onClick={() => {
                 Router.push({
                   pathname:
-                    window.location.origin + "/instructor/post-announcement",
-                  query: router.query,
+                    window.location.origin + "/student/announcements",
+                    query: router.query,
                 });
               }}
               className="w-full lg:w-6/12 xl:w-3/12 px-4 mb-2"
             >
-              <CardStats statSubtitle="" statTitle="Post Announcement" />
+              <CardStats statSubtitle="" statTitle="Announcements" />
             </div>
           </div>
         </div>
@@ -91,4 +96,4 @@ export default function Dashboard(params) {
   );
 }
 
-Dashboard.layout = Instructor;
+Dashboard.layout = Student;

@@ -2,12 +2,10 @@ import React from "react";
 
 // components
 
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/RoSidebar.js";
-import HeaderStats from "components/Headers/HeaderStats.js";
 import FooterAdmin from "components/Footers/FooterAdmin.js";
 
-export default function Admin({ children }) {
+export default function Ro({ children }) {
   return (
     <>
       <Sidebar />

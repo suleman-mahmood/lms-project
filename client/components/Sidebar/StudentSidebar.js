@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
+
 import { userEmailAtom } from "components/state";
 
 export default function Sidebar() {
@@ -11,7 +12,7 @@ export default function Sidebar() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const requestUrl = `http://localhost:3010/courses-taught?email=${email}`;
+    const requestUrl = `http://localhost:3010/get-courses?email=${email}`;
     fetch(requestUrl)
       .then((response) => {
         response.json().then((data) => {
@@ -97,12 +98,12 @@ export default function Sidebar() {
               {data.map((item, i) => {
                 return (
                   <li key={i} className="items-center">
-                    <Link href={`/instructor/choose-subject?course_id=${item.course_id}`}>
+                    <Link href={`/student/choose-subject?course_id=${item.course_id}`}>
                       <a
                         href="#pablo"
                         className={
                           "text-xs uppercase py-3 font-bold block " +
-                          (router.pathname.indexOf("/instructor/choose-subject") !==
+                          (router.pathname.indexOf("/student/choose-subject") !==
                           -1
                             ? "text-lightBlue-500 hover:text-lightBlue-600"
                             : "text-blueGray-700 hover:text-blueGray-500")
@@ -112,7 +113,7 @@ export default function Sidebar() {
                           className={
                             "fas fa-tv mr-2 text-sm " +
                             (router.pathname.indexOf(
-                              "/instructor/choose-subject"
+                              "/student/choose-subject"
                             ) !== -1
                               ? "opacity-75"
                               : "text-blueGray-300")

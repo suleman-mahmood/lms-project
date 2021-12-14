@@ -1,5 +1,5 @@
-const express = require('express');
-const mysql = require('mysql');
+const express = require("express");
+const mysql = require("mysql");
 
 const app = express();
 
@@ -9,7 +9,6 @@ Create Table RO (
   r_name VARCHAR(100),
   r_password VARCHAR(100),
   PRIMARY KEY(r_email)
-  
 );
 
 Create Table Instructor(
@@ -126,261 +125,306 @@ Create Table submits_a(
 );
 `;
 
-let allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', "*");
-  res.header('Access-Control-Allow-Headers', "*");
+let allowCrossDomain = function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
   next();
-}
+};
 app.use(allowCrossDomain);
 
-// Start listening on port 3010 for requests 
-app.listen('3010', () => {
+// Start listening on port 3010 for requests
+const PORT = process.env.PORT || 3010;
+app.listen(PORT, () => {
   console.log("server started on port 3010");
-})
+});
 
 // Create Connection to sql server
 const db = mysql.createConnection({
-  host: '34.124.181.136',
-  user: 'root',
-  password: '123',
+  host: "35.247.187.42",
+  // socketPath: '/cloudsql/blockchange-29151:asia-southeast1:lms-sql-project',
+  user: "root",
+  password: "123",
   database: "lms",
   multipleStatements: true,
-})
+});
 
 // Connect to the sql server
 db.connect((err) => {
-  if(err) throw err;
+  if (err) throw err;
 
   console.log("My Sql connected successfully!");
 });
 
+// Database Version
+app.get("/", (req, res) => {
+  res.send("Version 1.15");
+});
+
 // Create database
-app.get('/create-db', (req, res) => {
-  const sql = 'CREATE DATABASE lms';
+app.get("/create-db", (req, res) => {
+  const sql = "CREATE DATABASE lms";
   db.query(sql, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Database already created", err.message);
       throw err;
     }
     res.send("Database created....");
-  })
+  });
 });
 
 // Initialize database
-app.get('/init-db', (req, res) => {
+app.get("/init-db", (req, res) => {
   db.query(initialize_tables, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Error in creating tables", err.message);
       throw err;
     }
     res.send("Tables initialized and created....");
-  })
+  });
 });
 
 // -----------------------------------------RO IMPLEMENTATION ---------------------------------------------------------
 
 // Login API
-app.get('/login', (req, res) => {
-  const {email, password} = req.query;
+app.get("/login", (req, res) => {
+  const { email, password } = req.query;
   const sql_query = `SELECT * FROM RO WHERE r_email = "${email}" and r_password = "${password}"`;
 
   db.query(sql_query, (err, result) => {
-    if(result.length === 0) {
+    if (result.length === 0) {
       console.log("RO doesn't exist");
       const sql_query = `SELECT * FROM Instructor WHERE i_email = "${email}" and i_password = "${password}"`;
 
       db.query(sql_query, (err, result) => {
-        if(result.length === 0){
+        if (result.length === 0) {
           console.log("Instructor doesn't exist");
           const sql_query = `SELECT * FROM Student WHERE s_email = "${email}" and s_password = "${password}"`;
 
           db.query(sql_query, (err, result) => {
-            if(result.length === 0){
+            if (result.length === 0) {
               console.log("Student doesn't exist");
-              res.send({access_level: "None"})
-            }
-            else res.send({access_level: "Student"});
-          })
-        }
-        else res.send({access_level: "Instructor"});
-      })
-    }
-    else res.send({access_level: "RO"});
-  })
+              res.send({ access_level: "None" });
+            } else res.send({ access_level: "Student" });
+          });
+        } else res.send({ access_level: "Instructor" });
+      });
+    } else res.send({ access_level: "RO" });
+  });
 });
 
 // Add RO into the database
-app.get('/add-ro', (req, res) => {
-  const {name, email, password} = req.query;
+app.get("/add-ro", (req, res) => {
+  const { name, email, password } = req.query;
   const sql_query = `INSERT INTO RO VALUES ("${email}", "${name}", "${password}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("RO already exists", err.message);
       throw err;
     }
-    res.send({result: result, message: "Successfully added RO in the RO table"})
-  })
+    res.send({
+      result: result,
+      message: "Successfully added RO in the RO table",
+    });
+  });
 });
 
 // Add Instructor into the database
-app.get('/add-instructor', (req, res) => {
-  const {name, email, password, department} = req.query;
+app.get("/add-instructor", (req, res) => {
+  const { name, email, password, department } = req.query;
   const sql_query = `INSERT INTO Instructor VALUES ("${email}", "${name}", "${password}", "${department}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("INSTRUCTOR already exists", err.message);
       throw err;
     }
-    res.send({result: result, message: "Successfully added INSTRUCTOR in the INSTRUCTOR table"})
-  })
+    res.send({
+      result: result,
+      message: "Successfully added INSTRUCTOR in the INSTRUCTOR table",
+    });
+  });
 });
 
 // Remove Instructor into the database
-app.get('/remove-instructor', (req, res) => {
-  const {email} = req.query;
+app.get("/remove-instructor", (req, res) => {
+  const { email } = req.query;
   const sql_query = `DELETE FROM Instructor WHERE i_email = "${email}"`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Couldn't Delete Instructor", err.message);
       throw err;
     }
-    res.send({result: result, message: "Successfully deleted INSTRUCTOR from the INSTRUCTOR table"})
-  })
+    res.send({
+      result: result,
+      message: "Successfully deleted INSTRUCTOR from the INSTRUCTOR table",
+    });
+  });
 });
 
 // Add Student
-app.get('/add-student', (req, res) => {
-  const {name, email, password, roll_number} = req.query;
-  
+app.get("/add-student", (req, res) => {
+  const { name, email, password, roll_number } = req.query;
+
   const sql_query = `INSERT INTO Student VALUES ("${roll_number}", "${email}", "${name}", "${password}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Student already exists", err.message);
       throw err;
     }
-    res.send({enrolled: true, message: "Successfully enrolled Student in the Student table"})
-  })
+    res.send({
+      enrolled: true,
+      message: "Successfully enrolled Student in the Student table",
+    });
+  });
 });
 
 // Remove Student from the database
-app.get('/remove-student', (req, res) => {
-  const {roll_number} = req.query;
+app.get("/remove-student", (req, res) => {
+  const { roll_number } = req.query;
   const sql_query = `DELETE FROM Student WHERE roll_number = "${roll_number}"`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Couldn't Delete Student", err.message);
       throw err;
     }
-    res.send({result: result, message: "Successfully deleted Student from the Student table"})
-  })
+    res.send({
+      result: result,
+      message: "Successfully deleted Student from the Student table",
+    });
+  });
 });
 
 // Enroll Student
-app.get('/enroll-student', (req, res) => {
-  const {course_id, roll_number} = req.query;
-  
+app.get("/enroll-student", (req, res) => {
+  const { course_id, roll_number } = req.query;
+
   const sql_query = `INSERT INTO Takes VALUES (${course_id}, "${roll_number}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Student is already enrolled in a course", err.message);
       throw err;
     }
-    res.send({enrolled: true, message: "Successfully enrolled Student in the course"})
-  })
+    res.send({
+      enrolled: true,
+      message: "Successfully enrolled Student in the course",
+    });
+  });
 });
 
 // Create Course
-app.get('/create-course', (req, res) => {
-  const {course_id, name, course_code, department, credit_hours, semester, year, r_email, i_email} = req.query;
-  
+app.get("/create-course", (req, res) => {
+  const {
+    course_id,
+    name,
+    course_code,
+    department,
+    credit_hours,
+    semester,
+    year,
+    r_email,
+    i_email,
+  } = req.query;
+
   const sql_query = `INSERT INTO Courses VALUES ("${course_id}", "${name}", "${course_code}", "${department}", ${credit_hours}, "${semester}", "${year}", "${r_email}", "${i_email}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       console.log("Course already exists", err.message);
       throw err;
     }
-    res.send({enrolled: true, message: "Successfully added Course in the Course table"})
-  })
+    res.send({
+      enrolled: true,
+      message: "Successfully added Course in the Course table",
+    });
+  });
 });
 
 // -----------------------------------------INSTRUCTOR IMPLEMENTATION --------------------------------------------------
 
-app.get('/courses-taught', (req, res) => {
-  const {email} = req.query;
+app.get("/courses-taught", (req, res) => {
+  const { email } = req.query;
 
-  const sql_query = `SELECT * FROM Courses WHERE i_email = "${email}"`
-
-  db.query(sql_query, (err, result) => {
-    if(err) {
-      throw err;
-    }
-    res.send(result)
-  })
-})
-
-app.get('/roster', (req, res) => {
-  const {course_id} = req.query;
-
-  const sql_query = `SELECT * FROM Student WHERE roll_number in (SELECT roll_number FROM Takes WHERE course_id = "${course_id}")`
+  const sql_query = `SELECT * FROM Courses WHERE i_email = "${email}"`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
 
-app.get('/create-quiz', (req, res) => {
-  const {quiz_id, no_of_ques, start_time, end_time, course_id} = req.query;
+app.get("/roster", (req, res) => {
+  const { course_id } = req.query;
+
+  const sql_query = `SELECT * FROM Student WHERE roll_number in (SELECT roll_number FROM Takes WHERE course_id = "${course_id}")`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/create-quiz", (req, res) => {
+  const { quiz_id, no_of_ques, start_time, end_time, course_id } = req.query;
 
   const sql_query = `INSERT INTO Quizes VALUES ("${quiz_id}", "${no_of_ques}", "${start_time}", "${end_time}", "${course_id}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
 
-app.get('/create-question', (req, res) => {
-  const {ques_id, marks, prompt, opt_1, opt_2, opt_3, opt_4, answer, quiz_id} = req.query;
+app.get("/create-question", (req, res) => {
+  const {
+    ques_id,
+    marks,
+    prompt,
+    opt_1,
+    opt_2,
+    opt_3,
+    opt_4,
+    answer,
+    quiz_id,
+  } = req.query;
 
   const sql_query = `INSERT INTO Questions VALUES ("${ques_id}", "${marks}", "${prompt}", "${opt_1}", "${opt_2}", "${opt_3}", "${opt_4}", "${answer}", "${quiz_id}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
 
 // Delete the entire quiz and as well as all its associated questions
-app.get('/delete-quiz', (req, res) => {
-  const {quiz_id} = req.query;
+app.get("/delete-quiz", (req, res) => {
+  const { quiz_id } = req.query;
 
   const sql_query = `DELETE FROM Questions WHERE quiz_id = "${quiz_id}"; DELETE FROM Quizes WHERE quiz_id = "${quiz_id}"`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
 
-app.post('/create-assignment', (req, res) => {
-  const {a_id, open_date, close_date, course_id} = req.query;
-  const blob = req.body
+app.post("/create-assignment", (req, res) => {
+  const { a_id, open_date, close_date, course_id } = req.query;
+  const blob = req.body;
 
   console.log("I am invoked");
   console.log(req.query);
@@ -389,36 +433,177 @@ app.post('/create-assignment', (req, res) => {
   const sql_query = `INSERT INTO Assignments VALUES ("${a_id}", "${blob}", "${open_date}", "${close_date}", "${course_id}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
 
-app.post('/upload-resources', (req, res) => {
-  const {r_id, type, upload_date, course_id} = req.query;
-  const blob = req.body
+app.post("/upload-resources", (req, res) => {
+  const { r_id, type, upload_date, course_id } = req.query;
+  const blob = req.body;
 
   const sql_query = `INSERT INTO Resources VALUES ("${r_id}", "${blob}", "${type}", "${upload_date}", "${course_id}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
 
-app.get('/post-announcement', (req, res) => {
-  const {ann_id, description, time, course_id} = req.query;
+app.get("/post-announcement", (req, res) => {
+  const { ann_id, description, time, course_id } = req.query;
 
   const sql_query = `INSERT INTO Announcements VALUES ("${ann_id}", "${description}", "${time}", "${course_id}")`;
 
   db.query(sql_query, (err, result) => {
-    if(err) {
+    if (err) {
       throw err;
     }
-    res.send(result)
-  })
-})
+    res.send(result);
+  });
+});
+
+// -----------------------------------------STUDENT IMPLEMENTATION --------------------------------------------------
+
+app.get("/get-courses", (req, res) => {
+  const { email } = req.query;
+
+  const sql_query = `
+    SELECT * FROM Courses
+    WHERE course_id in (
+      SELECT course_id FROM Takes 
+      WHERE roll_number in (SELECT roll_number FROM Student WHERE s_email = '${email}')
+    )
+  `;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/get-announcements", (req, res) => {
+  const { course_id } = req.query;
+
+  const sql_query = `SELECT * FROM Announcements WHERE course_id = '${course_id}'`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/get-quizzes", (req, res) => {
+  const { course_id } = req.query;
+
+  const sql_query = `SELECT * FROM Quizes WHERE course_id = '${course_id}'`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/get-questions", (req, res) => {
+  const { quiz_id } = req.query;
+
+  const sql_query = `SELECT * FROM Questions WHERE quiz_id = '${quiz_id}'`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/submit-quiz", (req, res) => {
+  const { quiz_id, email, time, answers } = req.query;
+
+  const sql_query = `SELECT roll_number FROM Student WHERE s_email = '${email}'`;
+
+  db.query(sql_query, (err, result) => {
+    const { roll_number } = result[0];
+
+    const sql_query = `INSERT INTO submits_q VALUES ("${quiz_id}", "${roll_number}", "${time}", "${answers}")`;
+
+    db.query(sql_query, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      res.send(result);
+    });
+  });
+});
+
+app.post("/submit-assignment", (req, res) => {
+  const { a_id, email, time} = req.query;
+  const blob = req.body;
+
+  const sql_query = `SELECT roll_number FROM Student WHERE s_email = '${email}'`;
+
+  db.query(sql_query, (err, result) => {
+    console.log(req.query);
+    console.log(req.body);
+    console.log(result);
+    const { roll_number } = result[0];
+
+    const sql_query = `INSERT INTO submits_a VALUES ("${a_id}", "${roll_number}", "${time}", "${blob}")`;
+
+    db.query(sql_query, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      res.send(result);
+    });
+  });
+});
+
+app.get("/get-quiz-answers", (req, res) => {
+  const { roll_number } = req.query;
+
+  const sql_query = `SELECT * FROM submits_q WHERE roll_number = '${roll_number}'`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/get-resources", (req, res) => {
+  const { course_id } = req.query;
+
+  const sql_query = `SELECT * FROM Resources WHERE course_id = '${course_id}'`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
+
+app.get("/get-assignments", (req, res) => {
+  const { course_id } = req.query;
+
+  const sql_query = `SELECT * FROM Assignments WHERE course_id = '${course_id}'`;
+
+  db.query(sql_query, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.send(result);
+  });
+});
